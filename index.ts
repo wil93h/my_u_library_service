@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import Server from './models/server';
+// import db from './db/connection';
 
 dotenv.config();
 
