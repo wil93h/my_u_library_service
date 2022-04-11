@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import db from "../db/connection";
  
-const Book = db.define('User',{
+const Book = db.define('books',{
     title: {
         type: DataTypes.STRING,
     },
@@ -9,7 +9,7 @@ const Book = db.define('User',{
         type: DataTypes.STRING,
     },
     published_year: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
     },
     genre: {
         type: DataTypes.STRING,

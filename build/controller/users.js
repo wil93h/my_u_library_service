@@ -15,24 +15,47 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.postUser = exports.getUser = exports.getUsers = void 0;
 const user_1 = __importDefault(require("../models/user"));
 const getUsers = (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const users = yield user_1.default.findAll();
-    res.json(users);
+    const admins = yield user_1.default.findAll({
+        where: {
+            role: 'admin'
+        }
+    });
+    const students = yield user_1.default.findAll({
+        where: {
+            role: 'student'
+        }
+    });
+    res.json({ admins, students });
 });
 exports.getUsers = getUsers;
-const getUser = (req, res) => {
+const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
+    const user = yield user_1.default.findByPk(id);
     res.json({
-        msg: "getUser",
-        id
+        msg: 'success',
+        success: 'true',
+        user
     });
-};
+});
 exports.getUser = getUser;
-const postUser = (req, res) => {
-    const { body } = req;
-    res.json({
-        msg: "postUser",
-        body
-    });
-};
+const postUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { body } = req;
+        const user = yield user_1.default.create({ firstName: body.firstName, lastName: body.lastName, email: body.email, role: body.role === 1 ? 'admin' : 'student', status: 1 });
+        yield user.save();
+        res.json({
+            msg: 'the data was saved',
+            success: 'true',
+            user
+        });
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg: error,
+            success: false
+        });
+    }
+});
 exports.postUser = postUser;
 //# sourceMappingURL=users.js.map
